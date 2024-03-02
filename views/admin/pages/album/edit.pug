@@ -1,0 +1,63 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+block main
+        h1(class="mb-4") Change Metadata Album
+
+        form(
+            action= `${prefixAdmin}/album/edit/${data.id}?_method=PATCH`
+            method="POST"
+            enctype="multipart/form-data"
+        )
+            div(class="form-group mb-3")
+                label(for="title") Name
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    value=data.name_Album
+                    required
+                )
+            div(class="form-group mb-3", id = "ThanhToi")
+                lable(for="desc") Music List (24 chars)
+                br
+                each item in data.tracks
+                    input(type="text", name="commonName", value=`${item}`, size = "25")
+                    br
+            div(class = "form-group mb-3")
+                button(type="button", id="addNewButton") Add new row
+
+            div(class="form-group mb-3" upload-image)
+                label(for="thumbnail" style = "display: block;") Cover
+                input(
+                    type="file"
+                    class="form-control-file"
+                    id="thumbnail"
+                    name="thumbnail"
+                    accept="image/*"
+                    upload-image-input
+                    )
+                img(src=data.image, upload-image-preview class= "image-preview")
+                
+            
+            div(class="form-group mb-3")
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Update
+        script.
+            document.addEventListener('DOMContentLoaded', () => {
+                const divtag = document.getElementById('ThanhToi');
+                const addNewButton = document.getElementById('addNewButton');
+
+                addNewButton.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'commonName';
+                input.size = '25';
+                input.placeholder = 'Enter music ObjectID';
+                divtag.appendChild(input);
+                divtag.appendChild(document.createElement('br'));
+                });
+            });

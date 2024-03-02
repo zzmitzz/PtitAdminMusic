@@ -3,7 +3,6 @@ include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 block main
     h1(class="mb-4") Update Data
-
     form(
         action= `${prefixAdmin}/music/edit/${music.id}?_method=PATCH`
         id="form-edit-music"

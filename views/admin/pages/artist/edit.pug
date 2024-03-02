@@ -2,43 +2,34 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 block main
-    if (role.permissions.includes("products-category_edit")) 
-        +alert-error("5000")
-        h1(class="mb-4") Thêm mới danh mục
+        h1(class="mb-4") Change Metadata Artist
 
         form(
-            action= `${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH`
+            action= `${prefixAdmin}/artist/edit/${data.id}?_method=PATCH`
             method="POST"
             enctype="multipart/form-data"
         )
             div(class="form-group mb-3")
-                label(for="title") Tiêu đề
+                label(for="title") Name
                 input(
                     type="text"
                     class="form-control"
                     id="title"
                     name="title"
-                    value=data.title
+                    value=data.name_Artist
                     required
                 )
-            div(class="form-group mb-3")
-                label(for="parent_id") Danh mục cha
-                select(name="parent_id" id="parent_id" class= "form-control")
-                    option(value="") -- Chọn danh mục --
-                    if (records)
-                        +select-tree(records,1,data.parent_id)
+            div(class="form-group mb-3", id = "ThanhToi")
+                lable(for="desc") Music List (24 chars)
+                br
+                each item in data.id_albums
+                    input(type="text", name="commonName", value=`${item}`, size = "25")
+                    br
+            div(class = "form-group mb-3")
+                button(type="button", id="addNewButton") Add new row
 
-            div(class="form-group mb-3")
-                lable(for="desc") Mô tả
-                textarea(
-                    class="form-control"
-                    id="desc"
-                    name="description"
-                    rows="5"
-                    class="tinymce-textarea"
-                ) !{data.description}
             div(class="form-group mb-3" upload-image)
-                label(for="thumbnail" style = "display: block;") Ảnh
+                label(for="thumbnail" style = "display: block;") Cover
                 input(
                     type="file"
                     class="form-control-file"
@@ -47,41 +38,26 @@ block main
                     accept="image/*"
                     upload-image-input
                     )
-                img(src=data.thumbnail, upload-image-preview class= "image-preview")
+                img(src=data.image, upload-image-preview class= "image-preview")
                 
-            div(class="form-group mb-3")
-                label(for="position") Vị trí
-                input(
-                    type="number"
-                    class="form-control"
-                    id="position"
-                    name="position"
-                    placeholder="Tự động tăng"
-                    min="1"
-                    value= data.position
-                    )
-            div(class="form-group form-check form-check-inline mb-3")
-                input(
-                    type="radio"
-                    class="form-check-input"
-                    id="statusActive"
-                    name="status"
-                    value="active"
-                    checked=(data.status == "active" ? true: false)
-                )
-                label(for="statusActive" class="form-check-label") Hoạt động
-            div(class="form-group form-check form-check-inline mb-3")
-                input(
-                    type="radio"
-                    class="form-check-input"
-                    id="statusInActive"
-                    name="status"
-                    value="inactive"
-                    checked=(data.status == "inactive" ? true: false)
-                )
-                label(for="statusInActive" class="form-check-label") Không hoạt động  
+            
             div(class="form-group mb-3")
                 button(
                     type="submit"
                     class="btn btn-primary"
-                ) Cập nhật
+                ) Update
+        script.
+            document.addEventListener('DOMContentLoaded', () => {
+                const divtag = document.getElementById('ThanhToi');
+                const addNewButton = document.getElementById('addNewButton');
+
+                addNewButton.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'commonName';
+                input.size = '25';
+                input.placeholder = 'Enter music ObjectID';
+                divtag.appendChild(input);
+                divtag.appendChild(document.createElement('br'));
+                });
+            });

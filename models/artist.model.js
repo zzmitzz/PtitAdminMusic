@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const slug = require('mongoose-slug-updater');
-const Music = require("../models/music.model");
 const Schema = mongoose.Schema;
 mongoose.plugin(slug);
 const ArtistSchema = new mongoose.Schema({

@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+block main
+    //- +alert-error("5000")
+    //- +alert-success("5000")
+    h1 Album List
+    .card.mb-3 
+        .card-header 
+            .card-bodyz
+                .row 
+                    .col-8 
+                    .col-4.text-end
+                        a(
+                            href= `${prefixAdmin}/album/create`
+                            class= "btn btn-outline-success"
+                        ) + Add new
+                table(class= "table table-hover table-sm" checkbox-multi)
+                    thead 
+                        tr
+                            th 
+                                input(type= "checkbox" name= "check-all")
+                            th ID 
+                            th Tilte 
+                            th Cover 
+                            th Music List
+                            th Action
+                    tbody
+                        each item,index in records 
+                            tr 
+                                td
+                                    input(type="checkbox" name= "check-item" value=item.id)
+                                td #{item._id}
+                                td #{item.name_Album}
+                                td
+                                    img(src = item.image, alt= item.title class = 'center-cropped-image')
+                                td(style="max-width: 200px; overflow: auto;")
+                                    ul 
+                                        each line in item.tracks
+                                            li= line
+                                td 
+                                    a(href=`${prefixAdmin}/album/edit/${item.id}` class= "btn btn-warning btn-sm") Change
+                                    button(class= "btn btn-danger btn-sm ms-1" data-id=item.id delete-item-button) Delete
+
+    form(action="", method="POST" id= "form-delete-item" data-path= `${prefixAdmin}/album/delete`)
+    

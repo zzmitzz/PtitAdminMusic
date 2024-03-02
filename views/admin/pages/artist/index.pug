@@ -37,7 +37,7 @@ block main
                                         each line in item.id_albums
                                             li= line 
                                 td 
-                                    a(href=`${prefixAdmin}/music/edit/${item.id}` class= "btn btn-warning btn-sm") Change
+                                    a(href=`${prefixAdmin}/artist/edit/${item.id}` class= "btn btn-warning btn-sm") Change
                                     button(class= "btn btn-danger btn-sm ms-1" data-id=item.id delete-item-button) Delete
 
     form(action="", method="POST" id= "form-delete-item" data-path= `${prefixAdmin}/artist/delete`)

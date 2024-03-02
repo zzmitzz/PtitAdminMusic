@@ -1,7 +1,13 @@
 const Artist = require("../../models/artist.model");
 var admin = require("firebase-admin");
-var serviceAccount = require("./serviceAccountKey.json");
-
+const fs = require('fs');
+const systemConfig = require("../../config/system");
+const { ObjectId } = require('mongodb');
+const options = {
+    action: 'read',
+    expires: Date.now() + 24 * 60 * 60 * 1000 * 365 // 1 day
+};
+const bucket = admin.storage().bucket();
 module.exports.index = async (req,res)=>{
     
     const records = await Artist.find();
@@ -19,20 +25,39 @@ module.exports.index = async (req,res)=>{
 }
 module.exports.create = async (req,res) => {
 
-    
-    const records = await Artist.find();
-
     res.render("admin/pages/artist/create",{
         pageTitle: "Add Artist",
-        records: records
     });
 }
 
 module.exports.createPost = async(req,res) =>{
-
-    console.log(req.body)
-    
-    try{ 
+    try{
+        const imageFile = req.file
+        console.log(imageFile)
+        var fileName = `${Date.now()}_${imageFile.originalname}`;
+        const imageFilePath = `images/${fileName}`;
+        let filePath = `uploads/${fileName}`
+        fs.writeFile(filePath, imageFile.buffer, 'binary', (err) => {
+            if (err) {
+                console.error('Error saving image:', err);
+            } else {
+                console.log('Image saved successfully!');
+            }
+        });
+        await bucket.upload(filePath, { destination: imageFilePath });
+        let signedUrl = await bucket.file(imageFilePath).getSignedUrl(options);
+        image_url = signedUrl[0]; 
+        req.body.image = image_url;
+        req.body.name_Artist = req.body.title;
+        var tmplist = []
+        req.body.commonName.forEach(element => {
+            if(element != ""){
+                tmplist.push(new ObjectId(element))
+            }
+            
+        });
+        req.body.id_albums = tmplist;
+        console.log(req.body);
         await Artist.create(req.body);
         req.flash("success", "OK");
         res.redirect(`${systemConfig.prefixAdmin}/artist`);
@@ -43,43 +68,62 @@ module.exports.createPost = async(req,res) =>{
     }
 }
 
-// module.exports.edit = async (req,res) => {
+module.exports.edit = async (req,res) => {
 
-//     const records = await ProductCategory.find({deleted: false});
-//     const newRecords = createTreeHelper.create(records);
-//     let find = {
-//         deleted: false,
-//         _id: req.params.id
-//     };
-//     const data = await ProductCategory.findOne(find);
+    
+    let find = {
+        _id: req.params.id
+    };
+    const data = await Artist.findOne(find);
+    // c
+    res.render("admin/pages/artist/edit",{
+        pageTitle: "Edit Artist",
+        data: data
+    });
+}
 
-//     res.render("admin/pages/product-category/edit",{
-//         pageTitle: "Tạo danh mục",
-//         records: newRecords,
-//         data:data
-//     });
-// }
-
-// module.exports.editPatch = async (req,res) => {
-//     const updatedBy = {
-//         account_id: res.locals.user.id,
-//         updatedAt: new Date()
-//     };
-//     try{
-//         req.body.positon = parseInt(req.body.positon);
-
-//         await ProductCategory.updateOne({_id: req.params.id},{
-//             ...req.body,
-//             $push:{updatedBy:updatedBy}
-//         });
-//         req.flash("success","Cập nhật thành công");
-//         res.redirect(`${systemConfig.prefixAdmin}/products-category`);
-//     }
-//     catch(error){
-//         req.flash("error","Cập nhật thất bại");
-//         res.redirect("back");
-//     }
-// }
+module.exports.editPatch = async (req,res) => {
+    if(req.file != null){
+        const imageFile = req.file
+        console.log(imageFile)
+        var fileName = `${Date.now()}_${imageFile.originalname}`;
+        const imageFilePath = `images/${fileName}`;
+        let filePath = `uploads/${fileName}`
+        fs.writeFile(filePath, imageFile.buffer, 'binary', (err) => {
+            if (err) {
+                console.error('Error saving image:', err);
+            } else {
+                console.log('Image saved successfully!');
+            }
+        });
+        await bucket.upload(filePath, { destination: imageFilePath });
+        let signedUrl = await bucket.file(imageFilePath).getSignedUrl(options);
+        image_url = signedUrl[0]; 
+        req.body.image = image_url;
+    }
+    req.body.name_Artist = req.body.title;
+    var tmplist = []
+    req.body.commonName.forEach(element => {
+        if(element != "" && element.length == 24){
+            tmplist.push(new ObjectId(element))
+        }
+        
+    });
+    
+    req.body.id_albums = tmplist;
+    try{ 
+        await Artist.updateOne({_id: req.params.id}, {
+            ...req.body
+        });
+        req.flash("success", "OK");
+        
+    }
+    catch(error){
+        req.flash("error","Not OK");
+        res.redirect("back")
+    }
+    res.redirect(`${systemConfig.prefixAdmin}/artist`);
+}
 
 module.exports.deleteItem = async (req, res) =>{
     try{
@@ -93,22 +137,3 @@ module.exports.deleteItem = async (req, res) =>{
     res.redirect("back");
 }
 
-// module.exports.changeStatus = async (req, res) => {
-//     const updatedBy = {
-//         account_id: res.locals.user.id,
-//         updatedAt: new Date()
-//     };
-//     try{
-//         const status = req.params.status;
-//         const id = req.params.id;
-//         await ProductCategory.updateOne({_id:id},{
-//             status: status,
-//             $push:{updatedBy:updatedBy}
-//         });
-//         req.flash("success","Cập nhật trạng thái thành công");
-//     }
-//     catch(error){
-//         req.flash("error","Cập nhật trạng thái không thành công");
-//     }
-//     res.redirect("back");
-// }
