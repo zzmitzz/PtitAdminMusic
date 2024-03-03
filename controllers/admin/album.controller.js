@@ -56,9 +56,9 @@ module.exports.createPost = async(req,res) =>{
             if(element != ""){
                 tmplist.push(new Object(element))
             }
-            
         });
-        req.body.id_albums = tmplist;
+        console.log(tmplist);
+        req.body.tracks = tmplist;
         console.log(req.body);
         await Album.create(req.body);
         req.flash("success", "OK");
@@ -71,13 +71,11 @@ module.exports.createPost = async(req,res) =>{
 }
 
 module.exports.edit = async (req,res) => {
-
-    
     let find = {
         _id: req.params.id
     };
     const data = await Album.findOne(find);
-    // c
+
     res.render("admin/pages/album/edit",{
         pageTitle: "Edit album",
         data: data

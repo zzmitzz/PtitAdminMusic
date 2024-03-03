@@ -8,7 +8,9 @@
 .header .inner-logo a{
     font-size: 24px;
     font-weight: 700;
-    color: #fff;
+    color: #FFECBC;
+    text-decoration: none;
+    
 }
 .center-cropped-image {
     width: 100px; /* Set your desired width */
@@ -16,33 +18,57 @@
     object-fit: cover;
 }
 
-.body .slider{
-    width: 150px;
-    background: #323232;
+.body .slider {
+    width: 200px;
+    background: #000;
     color: #fff;
-    height: calc(100vh - 56px);
+    height: 100vh;
     position: fixed;
     top: 56px;
     left: 0;
+    list-style: none;
+    z-index: 999;
 }
 .body .main{
     margin: 15px;
     position: relative;
-    left: 150px;
-    width: calc(100% - 180px);
+    left: 210px;
+    width: calc(100% - 250px);
 }
 
 
-.slider .inner-menu ul{
+.slider .inner-menu ul {
+    background: #000;
     list-style: none;
-    padding: 0;
+    padding: 20px;
     margin: 0;
+    height: 100%;
 }
+
+.slider .inner-menu ul li {
+    background: #515151;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #515151;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
 .slider .inner-menu ul li a{
     color: #fff;
     display: block;
     padding: 6px 10px;
     border-bottom: 1px solid #515151;
+    text-decoration: none; /* Loại bỏ dòng gạch dưới */
+    font-size: 25px;
+}
+.slider .inner-menu ul li a:hover{
+    color: red;
+    display: block;
+    padding: 6px 10px;
+    border-bottom: 1px solid #515151;
+    scale: 1.1;
 }
 [checkbox-multi] tbody tr{
     height: 120px;
@@ -98,3 +124,47 @@
 .image-preview[src=""]{
     display: none;
 }
+
+.table .table-hover .table-sm tr td{
+    display: flex;
+}
+
+/*  */
+.musicPage .btn-group {
+    display: flex;
+    flex-direction: row;
+}
+
+/* CSS cho các cột "Title", "Artist", và "Genre" */
+.musicPage td:nth-child(2), /* Chọn cột "ObjectId" */
+.musicPage td:nth-child(3), /* Chọn cột "Title" */
+.musicPage td:nth-child(4) { /* Chọn cột "Artist" */
+    width: 150px; /* Thiết lập chiều rộng mong muốn */
+    max-width: 250px; /* Giới hạn chiều rộng tối đa */
+    overflow: hidden; /* Ẩn phần vượt quá chiều rộng */
+    white-space: nowrap; /* Không cho phép quấn dòng */
+   
+}
+
+.musicPage td:nth-child(5), /* Chọn cột "Genre" */
+.musicPage td:nth-child(6) { /* Chọn cột chứa ảnh */
+    width: 200px; /* Thiết lập chiều rộng mong muốn */
+}
+
+.musicPage td:nth-child(7),
+.musicPage td:nth-child(8) { /* Chọn cột chứa nút */
+    width: 150px; /* Thiết lập chiều rộng mong muốn */
+}
+
+.musicPage td:nth-child(7) .btn-group a,
+.musicPage td:nth-child(8) .btn-group .btn {
+    margin-right: 5px; /* Khoảng cách giữa các nút */
+    font-size: 15px; /* Kích thước chữ */
+    border-radius: 20px; /* Bo tròn viền */
+    padding: 5px 10px; /* Kích thước nút */
+}
+.musicPage td:nth-child(7) .btn-group a:hover,
+.musicPage td:nth-child(8) .btn-group .btn:hover {
+    scale: 1.1; /* Phóng to khi di chuột vào */
+}
+

@@ -169,7 +169,6 @@ module.exports.edit = async (req, res) => {
         });
     }
     catch(error){
-        req.send("error","Song not exist");
         res.redirect("back");
     }
 }
