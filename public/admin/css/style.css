@@ -1,21 +1,51 @@
-.header{
+::selection {
+    background-color: #FFECBC;
+    color: #000;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    background: #000;
+    color: #fff;
+}
+
+body .main {
+    background: #000;
+    color: #fff;
+}
+
+.main .car-bodyz .row {
+    background: #515151;
+    color: #fff;
+}
+
+.header {
     background: #202020;
     padding: 10px 0;
     position: sticky;
     top: 0;
     z-index: 999;
 }
-.header .inner-logo a{
+
+.header .inner-logo a {
     font-size: 24px;
     font-weight: 700;
     color: #FFECBC;
     text-decoration: none;
-    
+
 }
+
 .center-cropped-image {
-    width: 100px; /* Set your desired width */
-    height: 100px; /* Set your desired height */
+    width: 100px;
+    /* Set your desired width */
+    height: 100px;
+    /* Set your desired height */
     object-fit: cover;
+    border: 1px solid #eb0981;
+    border-radius: 10%;
 }
 
 .body .slider {
@@ -29,11 +59,13 @@
     list-style: none;
     z-index: 999;
 }
-.body .main{
+
+.body .main {
     margin: 15px;
     position: relative;
     left: 210px;
     width: calc(100% - 250px);
+    background: #000 !important;
 }
 
 
@@ -55,51 +87,102 @@
     border-radius: 10px;
 }
 
-.slider .inner-menu ul li a{
+.slider .inner-menu ul li a {
     color: #fff;
     display: block;
     padding: 6px 10px;
     border-bottom: 1px solid #515151;
-    text-decoration: none; /* Loại bỏ dòng gạch dưới */
+    text-decoration: none;
+    /* Loại bỏ dòng gạch dưới */
     font-size: 25px;
 }
-.slider .inner-menu ul li a:hover{
+
+.slider .inner-menu ul li a:hover {
     color: red;
     display: block;
     padding: 6px 10px;
     border-bottom: 1px solid #515151;
     scale: 1.1;
 }
-[checkbox-multi] tbody tr{
-    height: 120px;
+
+.body .main .card {
+    background-color: #000;
 }
-[checkbox-multi] tbody tr td i{
+
+.body .main .card .btn-outline-success {
+    color: #fff;
+    border-color: #28a745;
+    border: 4px solid #28a745;
+    background: #28a745;
+}
+
+.body .main .card .btn-outline-success:hover {
+    color: #fff;
+    background: transparent;
+}
+
+[checkbox-multi] thead tr th {
+    background: #202020;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+[checkbox-multi] tbody tr {
+    max-height: 120px;
+    overflow: scroll;
+    margin: 10px 0;
+}
+
+[checkbox-multi] tbody tr td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    /* display: flex; */
+    align-items: center;
+    justify-content: space-between;
+    background: #202020;
+    color: #fff;
+}
+
+[checkbox-multi] tbody tr td:nth-child(5) ul {
+    max-height: 200px !important;
+    overflow-y: scroll;
+    border-radius: 5px;
+    border: 2px solid #eb0981;
+    list-style-type: decimal;
+}
+
+[checkbox-multi] tbody tr td i {
     font-size: 25px;
     cursor: pointer;
 }
 
-[show-alert]{
+[show-alert] {
     position: fixed;
     top: 70px;
     right: 15px;
     z-index: 999;
 }
-[show-alert].alert-hidden{
+
+[show-alert].alert-hidden {
     animation-name: alert-hidden;
     animation-duration: 0.5s;
     animation-fill-mode: both;
 }
-@keyframes alert-hidden{
-    from{
+
+@keyframes alert-hidden {
+    from {
         right: 15px;
     }
-    to{
-        right:-100%;
+
+    to {
+        right: -100%;
         display: none;
     }
 }
 
-[show-alert] [close-alert]{
+[show-alert] [close-alert] {
     background: #fff;
     display: inline-block;
     width: 24px;
@@ -112,7 +195,7 @@
 }
 
 
-.image-preview{
+.image-preview {
     display: block;
     width: 150px;
     height: auto;
@@ -121,50 +204,69 @@
     padding: 15px;
     border-radius: 5px;
 }
-.image-preview[src=""]{
+
+.image-preview[src=""] {
     display: none;
 }
 
-.table .table-hover .table-sm tr td{
+.table .table-hover .table-sm tr td {
     display: flex;
 }
 
 /*  */
+
 .musicPage .btn-group {
     display: flex;
     flex-direction: row;
 }
 
 /* CSS cho các cột "Title", "Artist", và "Genre" */
-.musicPage td:nth-child(2), /* Chọn cột "ObjectId" */
-.musicPage td:nth-child(3), /* Chọn cột "Title" */
-.musicPage td:nth-child(4) { /* Chọn cột "Artist" */
-    width: 150px; /* Thiết lập chiều rộng mong muốn */
-    max-width: 250px; /* Giới hạn chiều rộng tối đa */
-    overflow: hidden; /* Ẩn phần vượt quá chiều rộng */
-    white-space: nowrap; /* Không cho phép quấn dòng */
-   
+.musicPage td:nth-child(2),
+/* Chọn cột "ObjectId" */
+.musicPage td:nth-child(3),
+/* Chọn cột "Title" */
+.musicPage td:nth-child(4) {
+    /* Chọn cột "Artist" */
+    width: 150px;
+    /* Thiết lập chiều rộng mong muốn */
+    max-width: 250px;
+    /* Giới hạn chiều rộng tối đa */
+    overflow: hidden;
+    /* Ẩn phần vượt quá chiều rộng */
+    white-space: nowrap;
+    /* Không cho phép quấn dòng */
+
 }
 
-.musicPage td:nth-child(5), /* Chọn cột "Genre" */
-.musicPage td:nth-child(6) { /* Chọn cột chứa ảnh */
-    width: 200px; /* Thiết lập chiều rộng mong muốn */
+.musicPage td:nth-child(5),
+/* Chọn cột "Genre" */
+.musicPage td:nth-child(6) {
+    /* Chọn cột chứa ảnh */
+    width: 200px;
+    /* Thiết lập chiều rộng mong muốn */
 }
 
 .musicPage td:nth-child(7),
-.musicPage td:nth-child(8) { /* Chọn cột chứa nút */
-    width: 150px; /* Thiết lập chiều rộng mong muốn */
+.musicPage td:nth-child(8) {
+    /* Chọn cột chứa nút */
+    width: 150px;
+    /* Thiết lập chiều rộng mong muốn */
 }
 
 .musicPage td:nth-child(7) .btn-group a,
 .musicPage td:nth-child(8) .btn-group .btn {
-    margin-right: 5px; /* Khoảng cách giữa các nút */
-    font-size: 15px; /* Kích thước chữ */
-    border-radius: 20px; /* Bo tròn viền */
-    padding: 5px 10px; /* Kích thước nút */
-}
-.musicPage td:nth-child(7) .btn-group a:hover,
-.musicPage td:nth-child(8) .btn-group .btn:hover {
-    scale: 1.1; /* Phóng to khi di chuột vào */
+    margin-right: 5px;
+    /* Khoảng cách giữa các nút */
+    font-size: 15px;
+    /* Kích thước chữ */
+    border-radius: 20px;
+    /* Bo tròn viền */
+    padding: 5px 10px;
+    /* Kích thước nút */
 }
 
+.musicPage td:nth-child(7) .btn-group a:hover,
+.musicPage td:nth-child(8) .btn-group .btn:hover {
+    scale: 1.1;
+    /* Phóng to khi di chuột vào */
+}

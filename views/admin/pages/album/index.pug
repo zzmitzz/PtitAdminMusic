@@ -32,11 +32,11 @@ block main
                                 td #{item.name_Album}
                                 td
                                     img(src = item.image, alt= item.title class = 'center-cropped-image')
-                                td(style="max-width: 200px; overflow: auto;")
+                                td(style="height: 200px !important; overflow-y: scroll;")
                                     ul 
                                         each line in item.tracks
                                             li= line
-                                td 
+                                td(style="width: 200px !important;")
                                     a(href=`${prefixAdmin}/album/edit/${item.id}` class= "btn btn-warning btn-sm") Change
                                     button(class= "btn btn-danger btn-sm ms-1" data-id=item.id delete-item-button) Delete
 
