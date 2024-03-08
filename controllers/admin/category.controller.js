@@ -1,8 +1,7 @@
-const Album = require("../../models/album.model");
+const Category = require("../../models/category.model");
 var admin = require("firebase-admin");
 const fs = require('fs');
 const systemConfig = require("../../config/system");
-const { ObjectId } = require('mongodb');
 const options = {
     action: 'read',
     expires: Date.now() + 24 * 60 * 60 * 1000 * 365 // 1 day
@@ -10,32 +9,22 @@ const options = {
 const bucket = admin.storage().bucket();
 module.exports.index = async (req,res)=>{
     
-    const records = await Album.find();
-    
-    console.log(records[0]);
-    // console.log(typeof(records[0].id_albums))
-    // for(item in records){
-    //     console.log(typeof(item.id_albums))
-    //     if(typeof(item.id_albums) == "string"){
-    //         records[item].id_albums = [item.id_albums]
-    //     }
-    // }
-    res.render("admin/pages/album/index",{
-        pageTitle: "Album",
+    const records = await Category.find();
+    res.render("admin/pages/category/index",{
+        pageTitle: "Category",
         records: records
     });
 }
 module.exports.create = async (req,res) => {
 
-    res.render("admin/pages/album/create",{
-        pageTitle: "Add Album",
+    res.render("admin/pages/category/create",{
+        pageTitle: "Add Category",
     });
 }
 
 module.exports.createPost = async(req,res) =>{
     try{
         const imageFile = req.file
-        console.log(imageFile)
         var fileName = `${Date.now()}_${imageFile.originalname}`;
         const imageFilePath = `images/${fileName}`;
         let filePath = `uploads/${fileName}`
@@ -50,7 +39,7 @@ module.exports.createPost = async(req,res) =>{
         let signedUrl = await bucket.file(imageFilePath).getSignedUrl(options);
         image_url = signedUrl[0]; 
         req.body.image = image_url;
-        req.body.name_Album = req.body.title;
+        req.body.Category = req.body.title;
         var tmplist = []
         req.body.commonName.forEach(element => {
             if(element != ""){
@@ -58,11 +47,10 @@ module.exports.createPost = async(req,res) =>{
             }
             
         });
-        req.body.id_albums = tmplist;
-        console.log(req.body);
-        await Album.create(req.body);
+        req.body.tracks = tmplist;
+        await Category.create(req.body);
         req.flash("success", "OK");
-        res.redirect(`${systemConfig.prefixAdmin}/album`);
+        res.redirect(`${systemConfig.prefixAdmin}/category`);
     }
     catch(error){
         req.flash("error","Not OK");
@@ -76,10 +64,10 @@ module.exports.edit = async (req,res) => {
     let find = {
         _id: req.params.id
     };
-    const data = await Album.findOne(find);
+    const data = await Category.findOne(find);
     // c
-    res.render("admin/pages/album/edit",{
-        pageTitle: "Edit album",
+    res.render("admin/pages/category/edit",{
+        pageTitle: "Edit Category",
         data: data
     });
 }
@@ -103,7 +91,7 @@ module.exports.editPatch = async (req,res) => {
         image_url = signedUrl[0]; 
         req.body.image = image_url;
     }
-    req.body.name_Album = req.body.title;
+    req.body.Category = req.body.title;
     var tmplist = []
     req.body.commonName.forEach(element => {
         if(element != "" && element.length == 24){
@@ -113,7 +101,7 @@ module.exports.editPatch = async (req,res) => {
     });
     req.body.tracks = tmplist;
     try{ 
-        await Album.updateOne({_id: req.params.id}, {
+        await Category.updateOne({_id: req.params.id}, {
             ...req.body
         });
         req.flash("success", "OK");
@@ -123,12 +111,12 @@ module.exports.editPatch = async (req,res) => {
         req.flash("error","Not OK");
         res.redirect("back")
     }
-    res.redirect(`${systemConfig.prefixAdmin}/album`);
+    res.redirect(`${systemConfig.prefixAdmin}/category`);
 }
 
 module.exports.deleteItem = async (req, res) =>{
     try{
-        await Album.deleteOne({_id : req.params.id});
+        await Category.deleteOne({_id : req.params.id});
         req.flash("success","Delete Successfully");
     }
     catch(error){
